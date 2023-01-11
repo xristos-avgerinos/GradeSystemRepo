@@ -29,7 +29,7 @@ public partial class DBContext : DbContext
 
     protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
 #warning To protect potentially sensitive information in your connection string, you should move it out of source code. You can avoid scaffolding the connection string by using the Name= syntax to read it from configuration - see https://go.microsoft.com/fwlink/?linkid=2131148. For more guidance on storing connection strings, see http://go.microsoft.com/fwlink/?LinkId=723263.
-        => optionsBuilder.UseSqlServer("Server=MitsosNotebook\\SQLEXPRESS;Database=GradeSystemDB;Trusted_Connection=True;Trust Server Certificate=True");
+        => optionsBuilder.UseSqlServer("Server=LAPTOP-5JQTS1GA\\SQLEXPRESS;Database=GradeSystemDB;Trusted_Connection=True;Trust Server Certificate=True");
 
     protected override void OnModelCreating(ModelBuilder modelBuilder)
     {
@@ -39,18 +39,18 @@ public partial class DBContext : DbContext
 
             entity.Property(e => e.IdCourse).ValueGeneratedNever();
 
-            entity.HasOne(d => d.AfmNavigation).WithMany(p => p.Courses).HasConstraintName("course_professors_AFM_fk");
+            entity.HasOne(d => d.Professor).WithMany(p => p.Courses).HasConstraintName("course_professors_AFM_fk");
         });
 
         modelBuilder.Entity<CourseHasStudent>(entity =>
         {
             entity.HasKey(e => new { e.IdCourse, e.RegistrationNumber }).HasName("PK__course_h__EF0D1337FF1B6994");
 
-            entity.HasOne(d => d.IdCourseNavigation).WithMany(p => p.CourseHasStudents)
+            entity.HasOne(d => d.Course).WithMany(p => p.CourseHasStudents)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("course_has_students_course_idCOURSE_fk");
 
-            entity.HasOne(d => d.RegistrationNumberNavigation).WithMany(p => p.CourseHasStudents)
+            entity.HasOne(d => d.Student).WithMany(p => p.CourseHasStudents)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("course_has_students_students_RegistrationNumber_fk");
         });
@@ -61,7 +61,7 @@ public partial class DBContext : DbContext
 
             entity.Property(e => e.Afm).ValueGeneratedNever();
 
-            entity.HasOne(d => d.UsernameNavigation).WithMany(p => p.Professors)
+            entity.HasOne(d => d.User).WithMany(p => p.Professors)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("professors_users_username_fk");
         });
@@ -72,7 +72,7 @@ public partial class DBContext : DbContext
 
             entity.Property(e => e.Phonenumber).ValueGeneratedNever();
 
-            entity.HasOne(d => d.UsernameNavigation).WithMany(p => p.Secretaries)
+            entity.HasOne(d => d.User).WithMany(p => p.Secretaries)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("secretaries_users_username_fk");
         });
@@ -83,7 +83,7 @@ public partial class DBContext : DbContext
 
             entity.Property(e => e.RegistrationNumber).ValueGeneratedNever();
 
-            entity.HasOne(d => d.UsernameNavigation).WithMany(p => p.Students)
+            entity.HasOne(d => d.User).WithMany(p => p.Students)
                 .OnDelete(DeleteBehavior.ClientSetNull)
                 .HasConstraintName("FK__students__userna__625A9A57");
         });

@@ -23,14 +23,14 @@ public partial class User
     [Column("role")]
     [StringLength(45)]
     [Unicode(false)]
-    public string Role { get; set; } = null!;
+    public string? Role { get; set; } = null!;
 
-    [InverseProperty("UsernameNavigation")]
+    [InverseProperty("User")]
     public virtual ICollection<Professor> Professors { get; } = new List<Professor>();
 
-    [InverseProperty("UsernameNavigation")]
+    [InverseProperty("User")]
     public virtual ICollection<Secretary> Secretaries { get; } = new List<Secretary>();
 
-    [InverseProperty("UsernameNavigation")]
+    [InverseProperty("User")]
     public virtual ICollection<Student> Students { get; } = new List<Student>();
 }

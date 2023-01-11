@@ -31,5 +31,5 @@ public partial class Secretary
 
     [ForeignKey("Username")]
     [InverseProperty("Secretaries")]
-    public virtual User UsernameNavigation { get; set; } = null!;
+    public virtual User User { get; set; } = null!;
 }

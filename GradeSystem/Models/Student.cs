@@ -29,10 +29,10 @@ public partial class Student
     [Unicode(false)]
     public string Username { get; set; } = null!;
 
-    [InverseProperty("RegistrationNumberNavigation")]
+    [InverseProperty("Student")]
     public virtual ICollection<CourseHasStudent> CourseHasStudents { get; } = new List<CourseHasStudent>();
 
     [ForeignKey("Username")]
     [InverseProperty("Students")]
-    public virtual User UsernameNavigation { get; set; } = null!;
+    public virtual User User { get; set; } = null!;
 }

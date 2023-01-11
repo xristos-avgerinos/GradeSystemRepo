@@ -19,12 +19,40 @@ namespace GradeSystem.Controllers
         }
 
         // GET: Students
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            var dBContext = _context.Students.Include(s => s.UsernameNavigation);
-            return View(await dBContext.ToListAsync());
+            if (HttpContext.Session.GetString("Student") != null)
+            {
+                String username = HttpContext.Session.GetString("Student");
+                var student = _context.Students.FirstOrDefault(s => s.Username == username);
+
+               // var grades = _context.Students.Include(s => s.CourseHasStudents).ThenInclude(p=>p.IdCourse);
+                
+                return View(student);
+            }
+            else
+            {
+                return RedirectToAction("UsersLogin","Users");
+            }
         }
 
+
+        public async Task<IActionResult> SelectAll()
+        {
+            if (HttpContext.Session.GetString("Student") != null)
+            {
+                String username = HttpContext.Session.GetString("Student");
+
+
+                var grades = _context.CourseHasStudents.Include(s => s.Student).Include(s => s.Course);
+
+                return View(await grades.ToListAsync());
+            }
+            else
+            {
+                return RedirectToAction("UsersLogin", "Users");
+            }
+        }
         // GET: Students/Details/5
         public async Task<IActionResult> Details(int? id)
         {
@@ -34,7 +62,7 @@ namespace GradeSystem.Controllers
             }
 
             var student = await _context.Students
-                .Include(s => s.UsernameNavigation)
+                .Include(s => s.User)
                 .FirstOrDefaultAsync(m => m.RegistrationNumber == id);
             if (student == null)
             {
@@ -130,7 +158,7 @@ namespace GradeSystem.Controllers
             }
 
             var student = await _context.Students
-                .Include(s => s.UsernameNavigation)
+                .Include(s => s.User)
                 .FirstOrDefaultAsync(m => m.RegistrationNumber == id);
             if (student == null)
             {

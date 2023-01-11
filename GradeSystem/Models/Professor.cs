@@ -30,10 +30,10 @@ public partial class Professor
     [Unicode(false)]
     public string Username { get; set; } = null!;
 
-    [InverseProperty("AfmNavigation")]
+    [InverseProperty("Professor")]
     public virtual ICollection<Course> Courses { get; } = new List<Course>();
 
     [ForeignKey("Username")]
     [InverseProperty("Professors")]
-    public virtual User UsernameNavigation { get; set; } = null!;
+    public virtual User User { get; set; } = null!;
 }

@@ -12,19 +12,42 @@ namespace GradeSystem.Controllers
     public class UsersController : Controller
     {
         private readonly DBContext _context;
+        public User? user;
 
         public UsersController(DBContext context)
         {
             _context = context;
         }
 
-        // GET: Users
-        public async Task<IActionResult> Index()
+        [HttpGet]
+        public IActionResult UsersLogin()
         {
-            // return View(await _context.Users.ToListAsync());
-            return RedirectToAction("Index", "Students");
-            
+            HttpContext.Session.Clear();
+            return View();
         }
+
+
+        [HttpPost]
+        public IActionResult UsersLogin(User model)
+        {
+            if (ModelState.IsValid)
+            {
+                user = _context.Users.FirstOrDefault(user => user.Username == model.Username
+                 && user.Password == model.Password);
+
+                if (user != null)
+                {
+                    String role = user.Role;
+                    HttpContext.Session.SetString(role, user.Username);
+                    return RedirectToAction("Index", role + "s");
+                }
+
+                ModelState.AddModelError(string.Empty, "Δέν βρέθηκε χρήστης με αυτά τα στοιχεία");
+            }
+
+            return View();
+        }
+
 
         // GET: Users/Details/5
         public async Task<IActionResult> Details(string id)

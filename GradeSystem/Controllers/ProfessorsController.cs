@@ -18,11 +18,20 @@ namespace GradeSystem.Controllers
             _context = context;
         }
 
-        // GET: Professors
-        public async Task<IActionResult> Index()
+        // GET: Professor
+        public IActionResult Index()
         {
-            var dBContext = _context.Professors.Include(p => p.UsernameNavigation);
-            return View(await dBContext.ToListAsync());
+            if (HttpContext.Session.GetString("Professor") != null)
+            {
+                String username = HttpContext.Session.GetString("Professor");
+                var professor = _context.Professors.FirstOrDefault(s => s.Username == username);
+
+                return View(professor);
+            }
+            else
+            {
+                return RedirectToAction("UsersLogin", "Users");
+            }
         }
 
         // GET: Professors/Details/5
@@ -34,7 +43,7 @@ namespace GradeSystem.Controllers
             }
 
             var professor = await _context.Professors
-                .Include(p => p.UsernameNavigation)
+                .Include(p => p.User)
                 .FirstOrDefaultAsync(m => m.Afm == id);
             if (professor == null)
             {
@@ -130,7 +139,7 @@ namespace GradeSystem.Controllers
             }
 
             var professor = await _context.Professors
-                .Include(p => p.UsernameNavigation)
+                .Include(p => p.User)
                 .FirstOrDefaultAsync(m => m.Afm == id);
             if (professor == null)
             {

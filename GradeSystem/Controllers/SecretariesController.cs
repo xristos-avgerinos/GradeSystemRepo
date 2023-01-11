@@ -21,7 +21,7 @@ namespace GradeSystem.Controllers
         // GET: Secretaries
         public async Task<IActionResult> Index()
         {
-            var dBContext = _context.Secretaries.Include(s => s.UsernameNavigation);
+            var dBContext = _context.Secretaries.Include(s => s.User);
             return View(await dBContext.ToListAsync());
         }
 
@@ -34,7 +34,7 @@ namespace GradeSystem.Controllers
             }
 
             var secretary = await _context.Secretaries
-                .Include(s => s.UsernameNavigation)
+                .Include(s => s.User)
                 .FirstOrDefaultAsync(m => m.Phonenumber == id);
             if (secretary == null)
             {
@@ -130,7 +130,7 @@ namespace GradeSystem.Controllers
             }
 
             var secretary = await _context.Secretaries
-                .Include(s => s.UsernameNavigation)
+                .Include(s => s.User)
                 .FirstOrDefaultAsync(m => m.Phonenumber == id);
             if (secretary == null)
             {
