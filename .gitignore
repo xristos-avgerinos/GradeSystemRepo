@@ -363,3 +363,4 @@ MigrationBackup/
 FodyWeavers.xsd
 
 /GradeSystem/appsettings.json
+/GradeSystem/Models/DBContext.cs
