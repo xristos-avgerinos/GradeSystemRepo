@@ -85,8 +85,15 @@
                             @Html.DisplayFor(modelItem => item.Student.Surname)
                         </td>
                         <td>
-                            <input id="grade" name="grade" form-control-lg" placeholder="Εισάγετε Βαθμο" />
-                           <a asp-action="InsertGrades"  asp-route-id="@item.IdCourse,@item.RegistrationNumber">Edit</a>
+                            <form method="post" action="InsertGrades" onSubmit="if(!confirm('Are you sure you want to post grade?')){return false;}">
+                                 <input id="grade" name="grade" form-control-lg type="number" min="0" max="10" placeholder="Εισάγετε Βαθμο" />
+
+                                <input hidden id="SelectedCourseId" name="SelectedCourseId" value="@item.IdCourse">
+                                <input hidden id="RegNum" name="RegNum" value="@item.RegistrationNumber">
+
+                                <button type="submit" value="submit" onClick='doAction("Submit", "Are you sure want to post grade?");'>Submit</button>
+                                
+                            </form>
                         </td>
 
 
@@ -98,7 +105,6 @@
         </div>
     </div>
 }
-
 
 @section Scripts{
     <script src="~/js/DataTable.js"></script>

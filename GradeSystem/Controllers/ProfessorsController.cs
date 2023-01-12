@@ -87,7 +87,7 @@ namespace GradeSystem.Controllers
 
         [HttpPost]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.Any, NoStore = true)]
-        public async Task<IActionResult> InsertGrades(int SelectedCourseId,int? idCourse,int? RegNum,int? grade)
+        public async Task<IActionResult> InsertGrades(int SelectedCourseId,int? RegNum,int? grade)
         {
             String username = HttpContext.Session.GetString("Professor");
 
@@ -96,29 +96,24 @@ namespace GradeSystem.Controllers
             var gradesByLesson = _context.CourseHasStudents.Include(s => s.Student).Include(s => s.Course).ThenInclude(s => s.Professor).Where(s => s.Course.Professor.Username.Equals(username) && s.GradeCourseStudent == null && s.IdCourse == SelectedCourseId);
             ViewBag.Selected = SelectedCourseId;
 
+            if (RegNum != null && grade != null)
+            {
 
+                CourseHasStudent crs = new CourseHasStudent();
 
-            return View(await gradesByLesson.ToListAsync());
-
-        }
-
-
-        [ActionName("InsertGrades2")]
-        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.Any, NoStore = true)]
-        public async Task<IActionResult> InsertGrades(int? idCourse, int? RegNum, int? grade)
-        {
-            String username = HttpContext.Session.GetString("Professor");
-
-            ProfessorLessons(username);
-
-            var gradesByLesson = _context.CourseHasStudents.Include(s => s.Student).Include(s => s.Course).ThenInclude(s => s.Professor).Where(s => s.Course.Professor.Username.Equals(username) && s.GradeCourseStudent == null && s.IdCourse == 1);
-            ViewBag.Selected = 1;
-
-
+                crs =_context.CourseHasStudents.FirstOrDefault(u=>u.RegistrationNumber==RegNum && u.IdCourse==SelectedCourseId);
+                crs.GradeCourseStudent = grade;
+                _context.Update(crs);
+                _context.SaveChanges();
+            }
+            
 
             return View(await gradesByLesson.ToListAsync());
 
         }
+
+
+        
 
 
 
