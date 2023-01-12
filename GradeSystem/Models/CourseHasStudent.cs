@@ -17,7 +17,7 @@ public partial class CourseHasStudent
     [Key]
     public int RegistrationNumber { get; set; }
 
-    public int GradeCourseStudent { get; set; }
+    public int? GradeCourseStudent { get; set; }
 
     [ForeignKey("IdCourse")]
     [InverseProperty("CourseHasStudents")]

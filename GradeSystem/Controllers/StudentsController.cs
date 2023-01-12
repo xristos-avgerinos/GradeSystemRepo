@@ -12,6 +12,7 @@ namespace GradeSystem.Controllers
     public class StudentsController : Controller
     {
         private readonly DBContext _context;
+        
 
         public StudentsController(DBContext context)
         {
@@ -19,6 +20,7 @@ namespace GradeSystem.Controllers
         }
 
         // GET: Students
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.Any, NoStore = true)]
         public IActionResult Index()
         {
             if (HttpContext.Session.GetString("Student") != null)
@@ -26,8 +28,6 @@ namespace GradeSystem.Controllers
                 String username = HttpContext.Session.GetString("Student");
                 var student = _context.Students.FirstOrDefault(s => s.Username == username);
 
-               // var grades = _context.Students.Include(s => s.CourseHasStudents).ThenInclude(p=>p.IdCourse);
-                
                 return View(student);
             }
             else
@@ -36,160 +36,80 @@ namespace GradeSystem.Controllers
             }
         }
 
-
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.Any, NoStore = true)]
         public async Task<IActionResult> SelectAll()
         {
             if (HttpContext.Session.GetString("Student") != null)
             {
                 String username = HttpContext.Session.GetString("Student");
+                var allGrades = _context.CourseHasStudents.Include(s => s.Student).Include(s => s.Course).Where(s=>s.Student.Username.Equals(username) && s.GradeCourseStudent!=null);
 
-
-                var grades = _context.CourseHasStudents.Include(s => s.Student).Include(s => s.Course);
-
-                return View(await grades.ToListAsync());
+                return View(await allGrades.ToListAsync());
             }
             else
             {
                 return RedirectToAction("UsersLogin", "Users");
             }
         }
-        // GET: Students/Details/5
-        public async Task<IActionResult> Details(int? id)
+
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.Any, NoStore = true)]
+        public async Task<IActionResult> SelectBySemester()
         {
-            if (id == null || _context.Students == null)
+            if (HttpContext.Session.GetString("Student") != null)
             {
-                return NotFound();
-            }
+                String username = HttpContext.Session.GetString("Student");
 
-            var student = await _context.Students
-                .Include(s => s.User)
-                .FirstOrDefaultAsync(m => m.RegistrationNumber == id);
-            if (student == null)
+                String max_semester = _context.CourseHasStudents.Include(s => s.Student).Include(s => s.Course).Where(s => s.Student.Username.Equals(username) && s.GradeCourseStudent != null).Max(s=>s.Course.CourseSemester);
+                ViewBag.max_sem = Int32.Parse(max_semester);
+                HttpContext.Session.SetString("max_sem",max_semester);
+
+                var gradesBySemester = _context.CourseHasStudents.Include(s => s.Student).Include(s => s.Course).Where(s=>s.Course.CourseSemester.Equals("1") && s.Student.Username.Equals(username) && s.GradeCourseStudent != null);
+                ViewBag.Selected = 1;
+
+                return View(await gradesBySemester.ToListAsync());
+            }
+            else
             {
-                return NotFound();
+                return RedirectToAction("UsersLogin", "Users");
             }
-
-            return View(student);
         }
 
-        // GET: Students/Create
-        public IActionResult Create()
-        {
-            ViewData["Username"] = new SelectList(_context.Users, "Username", "Username");
-            return View();
-        }
-
-        // POST: Students/Create
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("RegistrationNumber,Name,Surname,Department,Username")] Student student)
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.Any, NoStore = true)]
+        public async Task<IActionResult> SelectBySemester(int Selected)
         {
-            if (ModelState.IsValid)
-            {
-                _context.Add(student);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["Username"] = new SelectList(_context.Users, "Username", "Username", student.Username);
-            return View(student);
-        }
+            String username = HttpContext.Session.GetString("Student");
+            ViewBag.Selected = Selected;
+            ViewBag.max_sem = Int32.Parse(HttpContext.Session.GetString("max_sem"));
+            var gradesBySemester = _context.CourseHasStudents.Include(s => s.Student).Include(s => s.Course).Where(s => s.Course.CourseSemester.Equals(Selected.ToString()) && s.Student.Username.Equals(username) && s.GradeCourseStudent != null);
 
-        // GET: Students/Edit/5
-        public async Task<IActionResult> Edit(int? id)
-        {
-            if (id == null || _context.Students == null)
-            {
-                return NotFound();
-            }
-
-            var student = await _context.Students.FindAsync(id);
-            if (student == null)
-            {
-                return NotFound();
-            }
-            ViewData["Username"] = new SelectList(_context.Users, "Username", "Username", student.Username);
-            return View(student);
-        }
-
-        // POST: Students/Edit/5
-        // To protect from overposting attacks, enable the specific properties you want to bind to.
-        // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-        [HttpPost]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("RegistrationNumber,Name,Surname,Department,Username")] Student student)
-        {
-            if (id != student.RegistrationNumber)
-            {
-                return NotFound();
-            }
-
-            if (ModelState.IsValid)
-            {
-                try
-                {
-                    _context.Update(student);
-                    await _context.SaveChangesAsync();
-                }
-                catch (DbUpdateConcurrencyException)
-                {
-                    if (!StudentExists(student.RegistrationNumber))
-                    {
-                        return NotFound();
-                    }
-                    else
-                    {
-                        throw;
-                    }
-                }
-                return RedirectToAction(nameof(Index));
-            }
-            ViewData["Username"] = new SelectList(_context.Users, "Username", "Username", student.Username);
-            return View(student);
-        }
-
-        // GET: Students/Delete/5
-        public async Task<IActionResult> Delete(int? id)
-        {
-            if (id == null || _context.Students == null)
-            {
-                return NotFound();
-            }
-
-            var student = await _context.Students
-                .Include(s => s.User)
-                .FirstOrDefaultAsync(m => m.RegistrationNumber == id);
-            if (student == null)
-            {
-                return NotFound();
-            }
-
-            return View(student);
-        }
-
-        // POST: Students/Delete/5
-        [HttpPost, ActionName("Delete")]
-        [ValidateAntiForgeryToken]
-        public async Task<IActionResult> DeleteConfirmed(int id)
-        {
-            if (_context.Students == null)
-            {
-                return Problem("Entity set 'DBContext.Students'  is null.");
-            }
-            var student = await _context.Students.FindAsync(id);
-            if (student != null)
-            {
-                _context.Students.Remove(student);
-            }
+            return View(await gradesBySemester.ToListAsync());
             
-            await _context.SaveChangesAsync();
-            return RedirectToAction(nameof(Index));
         }
 
-        private bool StudentExists(int id)
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.Any, NoStore = true)]
+        public IActionResult GradesAverage()
         {
-          return _context.Students.Any(e => e.RegistrationNumber == id);
+            if (HttpContext.Session.GetString("Student") != null)
+            {
+                String username = HttpContext.Session.GetString("Student");
+
+                var gradesAvg = _context.CourseHasStudents.Include(s => s.Student).Include(s => s.Course).Where(s => s.Student.Username.Equals(username) && s.GradeCourseStudent >= 5).Average(s=>s.GradeCourseStudent);
+                int coursesCount = _context.CourseHasStudents.Include(s => s.Student).Where(s => s.Student.Username.Equals(username) && s.GradeCourseStudent>=5).Count();
+                ViewBag.coursesCount = coursesCount;
+                ViewBag.gradesAvg = gradesAvg;
+
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("UsersLogin", "Users");
+            }
         }
+
+
+       
     }
 }

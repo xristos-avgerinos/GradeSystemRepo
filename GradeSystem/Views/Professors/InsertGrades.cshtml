@@ -1,0 +1,104 @@
+﻿@model IEnumerable<GradeSystem.Models.CourseHasStudent>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+
+
+<div class="row">
+    <div class="col-md-12 col-lg-12 col-sm-12">
+        <div class="white-box row align-items-center">
+
+            <form action="SelectByLesson" method="post">
+
+                <h3>Επίλεξε Μάθημα:</h3>
+
+                <select class="form-select" name="SelectedCourseId" id="SelectedCourseId" onchange="this.form.submit()">
+                    <option value="" selected disabled hidden>Επίλεξε εδώ</option>
+                    @foreach (var item in ViewBag.lessonsList)
+                    {
+                        @if (ViewBag.Selected == item.IdCourse)
+                        {
+
+                            <option value="@item.IdCourse" selected> @item.IdCourse @item.CourseTitle</option>
+
+                        }
+                        else
+                        {
+                            <option value="@item.IdCourse"> @item.IdCourse @item.CourseTitle</option>
+                        }
+
+
+                    }
+
+                </select>
+
+            </form>
+        </div>
+    </div>
+</div>
+
+@if (ViewBag.Selected != null)
+{
+    <div class="container row p-0 m-0">
+
+        <div class="col-12 border p-3">
+            <table class="table table-striped table-bordered" style="width:100%" id="DT_load">
+
+                <thead>
+                    <tr>
+                        <th>
+                            Τμημα
+                        </th>
+                        <th>
+                            κωδικος φοιτητη
+                        </th>
+                        <th>
+                            Ονομα φοιτητη
+                        </th>
+                        <th>
+                            Επωνυμο Φοιτητη
+                        </th>
+                        <th>
+                            Βαθμος Φοιτητη
+                        </th>
+
+
+                    </tr>
+
+                </thead>
+
+                @foreach (var item in Model)
+                {
+                    <tr>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Student.Department)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.RegistrationNumber)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Student.Name)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Student.Surname)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.GradeCourseStudent)
+                        </td>
+
+
+                    </tr>
+                }
+
+            </table>
+
+        </div>
+    </div>
+}
+
+
+@section Scripts{
+    <script src="~/js/DataTable.js"></script>
+}
