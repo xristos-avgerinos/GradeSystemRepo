@@ -42,10 +42,7 @@ namespace GradeSystem.Controllers
             {
                 String username = HttpContext.Session.GetString("Professor");
 
-                ProfessorLessons(username);
-             
-                var gradesByLesson = _context.CourseHasStudents.Include(s => s.Course).Include(s => s.Course.Professor).Where(s => s.Course.Professor.Username.Equals(username) );
-
+                ProfessorLessons(username);      
                 
                 return View();
             }
@@ -80,10 +77,7 @@ namespace GradeSystem.Controllers
 
                 ProfessorLessons(username);
 
-                var gradesByLesson = _context.CourseHasStudents.Include(s => s.Course).Include(s => s.Course.Professor).Where(s => s.Course.Professor.Username.Equals(username));
-
-
-                return View(await gradesByLesson.ToListAsync());
+                return View();
             }
             else
             {
@@ -93,18 +87,39 @@ namespace GradeSystem.Controllers
 
         [HttpPost]
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.Any, NoStore = true)]
-        public async Task<IActionResult> InsertGrades(int SelectedCourseId)
+        public async Task<IActionResult> InsertGrades(int SelectedCourseId,int? idCourse,int? RegNum,int? grade)
         {
             String username = HttpContext.Session.GetString("Professor");
 
             ProfessorLessons(username);
 
-            var gradesByLesson = _context.CourseHasStudents.Include(s => s.Student).Include(s => s.Course).ThenInclude(s => s.Professor).Where(s => s.Course.Professor.Username.Equals(username) && s.GradeCourseStudent != null && s.IdCourse == SelectedCourseId);
+            var gradesByLesson = _context.CourseHasStudents.Include(s => s.Student).Include(s => s.Course).ThenInclude(s => s.Professor).Where(s => s.Course.Professor.Username.Equals(username) && s.GradeCourseStudent == null && s.IdCourse == SelectedCourseId);
             ViewBag.Selected = SelectedCourseId;
+
+
 
             return View(await gradesByLesson.ToListAsync());
 
         }
+
+
+        [ActionName("InsertGrades2")]
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.Any, NoStore = true)]
+        public async Task<IActionResult> InsertGrades(int? idCourse, int? RegNum, int? grade)
+        {
+            String username = HttpContext.Session.GetString("Professor");
+
+            ProfessorLessons(username);
+
+            var gradesByLesson = _context.CourseHasStudents.Include(s => s.Student).Include(s => s.Course).ThenInclude(s => s.Professor).Where(s => s.Course.Professor.Username.Equals(username) && s.GradeCourseStudent == null && s.IdCourse == 1);
+            ViewBag.Selected = 1;
+
+
+
+            return View(await gradesByLesson.ToListAsync());
+
+        }
+
 
 
         public void ProfessorLessons(String username) 

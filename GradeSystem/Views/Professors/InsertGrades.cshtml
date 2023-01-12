@@ -10,7 +10,7 @@
     <div class="col-md-12 col-lg-12 col-sm-12">
         <div class="white-box row align-items-center">
 
-            <form action="SelectByLesson" method="post">
+            <form action="InsertGrades" method="post">
 
                 <h3>Επίλεξε Μάθημα:</h3>
 
@@ -85,7 +85,8 @@
                             @Html.DisplayFor(modelItem => item.Student.Surname)
                         </td>
                         <td>
-                            @Html.DisplayFor(modelItem => item.GradeCourseStudent)
+                            <input id="grade" name="grade" form-control-lg" placeholder="Εισάγετε Βαθμο" />
+                           <a asp-action="InsertGrades"  asp-route-id="@item.IdCourse,@item.RegistrationNumber">Edit</a>
                         </td>
 
 
