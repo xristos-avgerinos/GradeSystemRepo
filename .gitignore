@@ -364,3 +364,4 @@ FodyWeavers.xsd
 
 /GradeSystem/appsettings.json
 /GradeSystem/Models/DBContext.cs
+GradeSystem/Models/DBContext.cs
