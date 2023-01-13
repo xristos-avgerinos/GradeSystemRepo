@@ -57,15 +57,21 @@ namespace GradeSystem.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.Any, NoStore = true)]
         public async Task<IActionResult> SelectByLesson(int SelectedCourseId)
         {
-            String username = HttpContext.Session.GetString("Professor");
+            if (HttpContext.Session.GetString("Professor") != null)
+            {
+                String username = HttpContext.Session.GetString("Professor");
 
-            ProfessorLessons(username);
+                ProfessorLessons(username);
 
-            var gradesByLesson = _context.CourseHasStudents.Include(s => s.Student).Include(s => s.Course).ThenInclude(s => s.Professor).Where(s => s.Course.Professor.Username.Equals(username) && s.GradeCourseStudent != null && s.IdCourse == SelectedCourseId );
-            ViewBag.Selected = SelectedCourseId;
+                var gradesByLesson = _context.CourseHasStudents.Include(s => s.Student).Include(s => s.Course).ThenInclude(s => s.Professor).Where(s => s.Course.Professor.Username.Equals(username) && s.GradeCourseStudent != null && s.IdCourse == SelectedCourseId);
+                ViewBag.Selected = SelectedCourseId;
 
-            return View(await gradesByLesson.ToListAsync());
-
+                return View(await gradesByLesson.ToListAsync());
+            }
+            else
+            {
+                return RedirectToAction("UsersLogin", "Users");
+            }
         }
 
 
@@ -90,24 +96,31 @@ namespace GradeSystem.Controllers
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.Any, NoStore = true)]
         public async Task<IActionResult> InsertGrades(int SelectedCourseId, int? RegNum, int? grade)
         {
-            String username = HttpContext.Session.GetString("Professor");
-
-            ProfessorLessons(username);
-
-            if (RegNum != null && grade != null)
+            if (HttpContext.Session.GetString("Professor") != null)
             {
+                String username = HttpContext.Session.GetString("Professor");
 
-                CourseHasStudent crs = new CourseHasStudent();
+                ProfessorLessons(username);
 
-                crs = _context.CourseHasStudents.FirstOrDefault(u => u.RegistrationNumber == RegNum && u.IdCourse == SelectedCourseId);
-                crs.GradeCourseStudent = grade;
-                _context.Update(crs);
-                _context.SaveChanges();
+                if (RegNum != null && grade != null)
+                {
+
+                    CourseHasStudent crs = new CourseHasStudent();
+
+                    crs = _context.CourseHasStudents.FirstOrDefault(u => u.RegistrationNumber == RegNum && u.IdCourse == SelectedCourseId);
+                    crs.GradeCourseStudent = grade;
+                    _context.Update(crs);
+                    _context.SaveChanges();
+                }
+                var gradesByLesson = _context.CourseHasStudents.Include(s => s.Student).Include(s => s.Course).ThenInclude(s => s.Professor).Where(s => s.Course.Professor.Username.Equals(username) && s.GradeCourseStudent == null && s.IdCourse == SelectedCourseId);
+                ViewBag.Selected = SelectedCourseId;
+
+                return View(await gradesByLesson.ToListAsync());
             }
-            var gradesByLesson = _context.CourseHasStudents.Include(s => s.Student).Include(s => s.Course).ThenInclude(s => s.Professor).Where(s => s.Course.Professor.Username.Equals(username) && s.GradeCourseStudent == null && s.IdCourse == SelectedCourseId);
-            ViewBag.Selected = SelectedCourseId;
-
-            return View(await gradesByLesson.ToListAsync());
+            else
+            {
+                return RedirectToAction("UsersLogin", "Users");
+            }
 
         }
 

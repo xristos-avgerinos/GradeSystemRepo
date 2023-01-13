@@ -10,6 +10,7 @@ namespace GradeSystem.Models;
 public partial class Student
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     public int RegistrationNumber { get; set; }
 
     [StringLength(45)]

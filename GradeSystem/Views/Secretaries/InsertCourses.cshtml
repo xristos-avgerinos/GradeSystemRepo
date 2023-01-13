@@ -1,0 +1,34 @@
+﻿@model GradeSystem.Models.Course
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Create</h1>
+
+<h4>Secretary</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="InsertCourses">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label asp-for="CourseTitle" class="control-label"></label>
+                <input required asp-for="CourseTitle" class="form-control" />
+                <span asp-validation-for="CourseTitle" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="CourseSemester" class="control-label"></label>
+                <input required asp-for="CourseSemester" class="form-control" />
+                <span asp-validation-for="CourseSemester" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

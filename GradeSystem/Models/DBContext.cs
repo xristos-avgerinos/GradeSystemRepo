@@ -39,9 +39,10 @@ public partial class DBContext : DbContext
         {
             entity.HasKey(e => e.IdCourse).HasName("course_pk");
 
-            entity.Property(e => e.IdCourse).ValueGeneratedNever();
+            entity.Property(e => e.IdCourse).ValueGeneratedOnAdd();
 
             entity.HasOne(d => d.Professor).WithMany(p => p.Courses).HasConstraintName("course_professors_AFM_fk");
+
         });
 
         modelBuilder.Entity<CourseHasStudent>(entity =>
@@ -83,7 +84,7 @@ public partial class DBContext : DbContext
         {
             entity.HasKey(e => e.RegistrationNumber).HasName("PK__students__E886460334FF009F");
 
-            entity.Property(e => e.RegistrationNumber).ValueGeneratedNever();
+            entity.Property(e => e.RegistrationNumber).ValueGeneratedOnAdd();
 
             entity.HasOne(d => d.User).WithMany(p => p.Students)
                 .OnDelete(DeleteBehavior.ClientSetNull)

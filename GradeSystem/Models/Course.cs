@@ -10,6 +10,7 @@ namespace GradeSystem.Models;
 public partial class Course
 {
     [Key]
+    [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
     [Column("idCOURSE")]
     public int IdCourse { get; set; }
 

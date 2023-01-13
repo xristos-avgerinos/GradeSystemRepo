@@ -10,7 +10,8 @@ namespace GradeSystem.Models;
 public partial class Secretary
 {
     [Key]
-    public int Phonenumber { get; set; }
+    [StringLength(45)]
+    public String Phonenumber { get; set; }
 
     [StringLength(45)]
     [Unicode(false)]
