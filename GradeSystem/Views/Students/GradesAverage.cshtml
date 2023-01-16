@@ -1,3 +1,96 @@
 ﻿
-<h1>Average: @ViewBag.gradesAvg</h1>
-<h1>Count: @ViewBag.coursesCount</h1>
+@{
+    ViewData["Title"] = "Προβολή Συνολικής Βαθμολογίας";
+}
+
+<html>
+<head>
+    <link href="~/css/style.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+
+
+    <style>
+        .user-bg .overlay-box {
+            background: #6190b7;
+            opacity: 0.85;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            text-align: center
+        }
+
+        #Selected {
+            width: 250px;
+        }
+
+            #Selected option {
+                width: 250px;
+            }
+    </style>
+</head>
+<body>
+
+
+    <div class="page-wrapper border">
+
+
+        <!-- Container fluid  -->
+        <!-- ============================================================== -->
+        <div class="container-fluid " style="background-color: #F7F7F7">
+
+            <h3>Προβολή Συνολικής Βαθμολογίας </h3>
+
+            <div class="container row p-0 m-0">
+
+                <div class="col-12 border p-3" style="background-color: white">
+                    <table class="table table-striped table-bordered" style="width:100%" id="DT_load">
+
+                        <thead>
+                            <tr>
+                                <th>
+                                    Μ.Ο. Μαθημάτων
+                                </th>
+                                <th>
+                                    Πλήθος Περασμένων Μαθημάτων
+                                </th>
+                                <th>
+                                    Ects
+                                </th>
+                            </tr>
+
+                        </thead>
+
+                        
+                            <tr>
+                                <td>
+                                     @ViewBag.gradesAvg
+                                </td>
+                                <td>
+                                    @ViewBag.coursesCount
+                                </td>
+                                <td>
+                                @{
+                                    int x = ViewBag.coursesCount * 5;
+                                }
+                                @x
+                            </td>                               
+                            </tr>
+                        
+                    </table>
+                </div>
+            </div>
+
+
+        </div>
+
+    </div>
+
+    <br />
+    <br />
+    <br />
+
+</body>
+
+</html>

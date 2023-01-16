@@ -13,7 +13,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container-fluid">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">GradeSystem</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Αρχική Σελίδα</a>
                 <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -21,33 +21,36 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="UsersLogin"> UsersLogin</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="UsersLogin"> Σύνδεση χρήστη</a>
                         </li>
                         
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">Students</a>
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">Φοιτητές</a>
                             <ul class="dropdown-menu" aria-labelledby="dropdown03">
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Students" asp-action="SelectAll">προβολη1</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Students" asp-action="SelectBySemester">προβολη2</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Students" asp-action="GradesAverage">προβολη3</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Students" asp-action="Index">Προφίλ Χρήστη</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Students" asp-action="SelectAll">Προβολή βαθμολογίας ανά μάθημα</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Students" asp-action="SelectBySemester">Προβολή βαθμολογίας ανά εξάμηνο</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Students" asp-action="GradesAverage">Προβολή συνολικής βαθμολογίας</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">Professors</a>
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">Καθηγητές</a>
                             <ul class="dropdown-menu" aria-labelledby="dropdown03">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Professors" asp-action="Index">Προφίλ Χρήστη</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Professors" asp-action="SelectByLesson">Προβολη Βαθμολογιας Ανα Μαθημα</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Professors" asp-action="InsertGrades">Καταχωρηση Βαθμολογιας</a></li>
                             </ul>
                         </li>
                         <li class="nav-item dropdown">
-                            <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">Secretaries</a>
+                            <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">Γραμματεία</a>
                             <ul class="dropdown-menu" aria-labelledby="dropdown03">
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Secretaries" asp-action="Index">Προφίλ Χρήστη</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Secretaries" asp-action="SelectCourses">Προβολη Μαθημάτων</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Secretaries" asp-action="InsertCourses"> Καταχώρηση Μαθημάτων</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Secretaries" asp-action="InsertProfessors"> Καταχώρηση Καθηγητών</a></li>
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Secretaries" asp-action="InsertStudents"> Καταχώρηση Φοιτητων</a></li> 
                                 <li><a class="dropdown-item" asp-area="" asp-controller="Secretaries" asp-action="AssignCourseToProfessor">Ανάθεση μαθήματος σε Καθηγητή</a></li>
-                                <li><a class="dropdown-item" asp-area="" asp-controller="Secretaries" asp-action="AssignCourseToStudent">Ανάθεση μαθήματος σε Φοιτητη</a></li>
+                                <li><a class="dropdown-item" asp-area="" asp-controller="Secretaries" asp-action="AssignCourseToStudent">Δήλωση μαθήματος σε Φοιτητη</a></li>
                             </ul>
                         </li>
                     </ul>
@@ -63,7 +66,7 @@
 
     <footer class="border-top footer text-muted">
         <div class="container">
-            &copy; 2023 - GradeSystem - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+            &copy; 2023 - Πύλη Φοιτητολογίου - <a asp-area="" asp-controller="Home" asp-action="About">About</a>
         </div>
     </footer>
     <script src="~/lib/jquery/dist/jquery.min.js"></script>

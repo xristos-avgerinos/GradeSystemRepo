@@ -4,35 +4,121 @@
     ViewData["Title"] = "Details";
 }
 
-<h1>Details</h1>
+<html>
+<head>
+    <link href="~/css/style.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
 
-<div>
-    <h4>Professor</h4>
-    <hr />
-    <dl class="row">
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Name)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Name)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Surname)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Surname)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Department)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Department)
-        </dd>
-        <dt class="col-sm-2">
-            @Html.DisplayNameFor(model => model.Username)
-        </dt>
-        <dd class="col-sm-10">
-            @Html.DisplayFor(model => model.Username)
-        </dd>
-    </dl>
-</div>
+
+    <style>
+        .user-bg .overlay-box {
+            background: #6190b7;
+            opacity: 0.85;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            text-align: center
+        }
+
+        #Selected {
+            width: 250px;
+        }
+
+        #Selected option {
+            width: 250px;
+        }
+    </style>
+</head>
+<body>
+
+
+    <div class="page-wrapper border">
+
+        <div class="page-breadcrumb bg-white ">
+            <div class="row align-items-center ">
+                <div class="col-md-6">
+                    <h4 class="page-title fw-bold">Καλώς ήρθες @Model.Name @Model.Surname</h4>
+                </div>
+                <div class="col-md-6 text-right  ">
+                    <a asp-action="LogOut" asp-controller="Professors" class="btn float-end btn-info text-white btn-outline-secondary">Αποσύνδεση</a>
+
+                </div>
+                
+
+            </div>
+            <!-- /.col-lg-12 -->
+        </div>
+
+        <!-- Container fluid  -->
+        <!-- ============================================================== -->
+        <div class="container-fluid " style="background-color: #f8f9fc">
+
+            <div class="col-lg-6 col-xlg-3 col-md-12 offset-3">
+                <div class="white-box ">
+                    <div class="user-bg">
+                       
+                        <div class="overlay-box">
+                            <div class="user-content">
+                                <img src="~/img/usericon.png"
+                                     class="thumb-lg img-circle" alt="img">
+                                <h4 class="text-white mt-2 fw-bold">Όνομα Χρήστη: @Model.Username</h4>
+
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="user-btm-box mt-5 d-md-flex">
+                        <div class="col-md-6 col-sm-4 text-center ">
+
+                            <h3>Όνομα </h3>
+                            <h4>@Model.Name</h4>
+                        </div>
+                        <div class="col-md-6 col-sm-4 text-center ">
+                            <h3>Επώνυμο </h3>
+                            <h4>@Model.Surname</h4>
+                        </div>
+
+                    </div>
+                    <div class="user-btm-box mt-5 d-md-flex ">
+                        
+                        
+                        <div class="col-md-6 col-sm-4 text-center ">
+
+                            <h3>ΑΦΜ </h3>
+                            <h4>@Model.Afm</h4>
+                        </div>
+                        <div class="col-md-6 col-sm-4 text-center ">
+                            <h3>Τμήμα </h3>
+                            <select id="departments" asp-for="Department">
+                                @foreach (var item in Enum.GetNames(typeof(Departments)))
+                                {
+                                    if (item.Equals(Model.Department))
+                                    {
+                                        <option value="@item">@item</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@item" disabled>@item</option>
+                                    }
+
+                                }
+                            </select>
+                        </div> 
+                    </div>
+                   
+                    <br />
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    <br/>
+    <br/>
+    <br />
+</body>
+
+</html>

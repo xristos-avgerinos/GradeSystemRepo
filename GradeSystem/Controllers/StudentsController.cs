@@ -83,7 +83,7 @@ namespace GradeSystem.Controllers
             {
                 String username = HttpContext.Session.GetString("Student");
                 ViewBag.Selected = Selected;
-                ViewBag.max_sem = HttpContext.Session.GetString("max_sem");
+                ViewBag.max_sem = HttpContext.Session.GetInt32("max_sem");
                 var gradesBySemester = _context.CourseHasStudents.Include(s => s.Student).Include(s => s.Course).Where(s => s.Course.CourseSemester.Equals(Selected.ToString()) && s.Student.Username.Equals(username) && s.GradeCourseStudent != null);
 
                 return View(await gradesBySemester.ToListAsync());
@@ -105,7 +105,7 @@ namespace GradeSystem.Controllers
                 var gradesAvg = _context.CourseHasStudents.Include(s => s.Student).Include(s => s.Course).Where(s => s.Student.Username.Equals(username) && s.GradeCourseStudent >= 5).Average(s=>s.GradeCourseStudent);
                 int coursesCount = _context.CourseHasStudents.Include(s => s.Student).Where(s => s.Student.Username.Equals(username) && s.GradeCourseStudent>=5).Count();
                 ViewBag.coursesCount = coursesCount;
-                ViewBag.gradesAvg = gradesAvg;
+                ViewBag.gradesAvg = System.Math.Round((double)gradesAvg,2);
 
                 return View();
             }
@@ -115,7 +115,10 @@ namespace GradeSystem.Controllers
             }
         }
 
+        public IActionResult LogOut()
+        {
+            return RedirectToAction("UsersLogin", "Users");
+        }
 
-       
     }
 }

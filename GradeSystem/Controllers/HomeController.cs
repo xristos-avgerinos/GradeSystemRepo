@@ -19,7 +19,7 @@ namespace GradeSystem.Controllers
             return View();
         }
 
-        public IActionResult Privacy()
+        public IActionResult About()
         {
             HttpContext.Session.Clear();
             return View();

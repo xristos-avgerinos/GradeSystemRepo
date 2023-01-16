@@ -343,5 +343,10 @@ namespace GradeSystem.Controllers
             ViewBag.Students = Students.ToList();
         }
 
+        public IActionResult LogOut()
+        {
+            return RedirectToAction("UsersLogin", "Users");
+        }
+
     }
 }

@@ -130,5 +130,9 @@ namespace GradeSystem.Controllers
             ViewBag.lessonsList = lessons.ToList();
         }
 
+        public IActionResult LogOut()
+        {
+            return RedirectToAction("UsersLogin", "Users");
+        }
     }
 }
