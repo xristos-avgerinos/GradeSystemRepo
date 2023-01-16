@@ -4,31 +4,94 @@
     ViewData["Title"] = "Create";
 }
 
-<h1>Create</h1>
 
-<h4>Secretary</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="InsertCourses">
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="CourseTitle" class="control-label"></label>
-                <input required asp-for="CourseTitle" class="form-control" />
-                <span asp-validation-for="CourseTitle" class="text-danger"></span>
+
+<html>
+<head>
+    <link href="~/css/style.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
+
+
+    <style>
+        .user-bg .overlay-box {
+            background: #6190b7;
+            opacity: 0.85;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            text-align: center
+        }
+
+        #Selected {
+            width: 250px;
+        }
+
+        #Selected option {
+            width: 250px;
+        }
+    </style>
+</head>
+<body>
+
+
+    <div class="page-wrapper">
+
+        
+        <!-- Container fluid  -->
+        <!-- ============================================================== -->
+        <div class="container-fluid " style="background-color: white">
+
+            <h3>Εισαγωγή Μαθήματος</h3>
+
+            <div class="container row p-0 m-0">
+
+                <div class="col-12 border p-3" style="background-color: white">
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <form asp-action="InsertCourses">
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="form-group">
+                                    <label asp-for="CourseTitle" class="control-label">Τίτλος Μαθήματος</label>
+                                    <input required asp-for="CourseTitle" class="form-control" />
+                                    <span asp-validation-for="CourseTitle" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="CourseSemester" class="control-label">Εξάμηνο Μαθήματος</label>
+                                    <br />
+                                    <select asp-for="CourseSemester">
+                                        
+                                            @for (int i = 1; i<=8; i++){
+                                                <option value="@i">Εξάμηνο @i </option>
+                                            }
+                                        
+                                    </select>
+                                    <span asp-validation-for="CourseSemester" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <input type="submit" value="Εισαγωγή" class="btn btn-primary" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
             </div>
-            <div class="form-group">
-                <label asp-for="CourseSemester" class="control-label"></label>
-                <input required asp-for="CourseSemester" class="form-control" />
-                <span asp-validation-for="CourseSemester" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+                   
+
+        </div>
+
     </div>
-</div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <br/>
+    <br/>
+    <br />
+    
+</body>
+
+</html>
+@section Scripts{
+    <script src="~/js/DataTable.js"></script>
 }

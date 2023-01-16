@@ -1,63 +1,111 @@
 ﻿@model GradeSystem.Models.Professor
 @inject IHttpContextAccessor httpContext
 
-@{
-    ViewData["Title"] = "View";
-}
+@{ViewData["Title"] = "Εισαγωγή Καθηγητή";}
+
+<html>
+<head>
+    <link href="~/css/style.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
 
 
-<h1>View</h1>
+    <style>
+        .user-bg .overlay-box {
+            background: #6190b7;
+            opacity: 0.85;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            text-align: center
+        }
 
-<h4>Professor</h4>
-<hr />
-<div class="row">
-    <div class="col-md-4">
-        <form asp-action="InsertProfessors">
+        #Selected {
+            width: 250px;
+        }
 
-            <div class="form-group">
-                <label asp-for="Afm" class="control-label"></label>
-                <input required type="text" id="afm" onpaste="return false;" ondrop="return false;" autocomplete="off" onkeypress="return onlyNumberKey(event)" minlength="9" maxlength="9" asp-for="Afm" class="form-control" />
-                <span asp-validation-for="Afm" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Name" class="control-label"></label>
-                <input required asp-for="Name" class="form-control" />
-                <span asp-validation-for="Name" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label asp-for="Surname" class="control-label"></label>
-                <input required asp-for="Surname" class="form-control" />
-                <span asp-validation-for="Surname" class="text-danger"></span>
-            </div>
-            <div class="form-group">
-                <label class="form-label h6" for="form3Example4" asp-for="Department">Τμημα</label>
-                <select id="departments" asp-for="Department">
-                    @foreach (var item in Enum.GetNames(typeof(Departments)))
-                    {
-                        if (item.Equals(@httpContext.HttpContext.Session.GetString("department")))
-                        {
-                            <option value="@item">@item</option>
-                        }
-                        else
-                        {
-                            <option value="@item" disabled>@item</option>
-                        }
+        #Selected option {
+            width: 250px;
+        }
+    </style>
+</head>
+<body>
 
-                    }
-                </select>
-                <span asp-validation-for="Department" class="text-danger"></span>
+
+    <div class="page-wrapper">
+
+        
+        <!-- Container fluid  -->
+        <!-- ============================================================== -->
+        <div class="container-fluid " style="background-color: white">
+
+            <h3>Εισαγωγή Καθηγητή</h3>
+
+            <div class="container row p-0 m-0">
+
+                <div class="col-12 border p-3" style="background-color: white">
+
+                    <div class="row">
+                        <div class="col-md-4">
+                            <form asp-action="InsertProfessors">
+
+                                <div class="form-group">
+                                    <label asp-for="Afm" class="control-label">ΑΦΜ Καθηγητή</label>
+                                    <input required type="text" id="afm" onpaste="return false;" ondrop="return false;" autocomplete="off" onkeypress="return onlyNumberKey(event)" minlength="9" maxlength="9" asp-for="Afm" class="form-control" />
+                                    <span asp-validation-for="Afm" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Name" class="control-label">Όνομα Καθηγητή</label>
+                                    <input required asp-for="Name" class="form-control" />
+                                    <span asp-validation-for="Name" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label asp-for="Surname" class="control-label">Επώνυμο Καθηγητή</label>
+                                    <input required asp-for="Surname" class="form-control" />
+                                    <span asp-validation-for="Surname" class="text-danger"></span>
+                                </div>
+                                <div class="form-group">
+                                    <label class="form-label h6" for="form3Example4" asp-for="Department">Τμήμα</label>
+                                    <br />
+                                    <select id="departments" asp-for="Department">
+                                        @foreach (var item in Enum.GetNames(typeof(Departments)))
+                                        {
+                                            if (item.Equals(@httpContext.HttpContext.Session.GetString("department")))
+                                            {
+                                                <option value="@item">@item</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@item" disabled>@item</option>
+                                            }
+
+                                        }
+                                    </select>
+                                    <span asp-validation-for="Department" class="text-danger"></span>
+                                </div>
+                                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                                <div class="form-group">
+                                    <input type="submit" value="Καταχώρηση" class="btn btn-primary" />
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+
+                </div>
             </div>
-            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <input type="submit" value="Create" class="btn btn-primary" />
-            </div>
-        </form>
+                   
+
+        </div>
+
     </div>
-</div>
 
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+    <br/>
+    <br/>
+    <br />
+    
+</body>
+
 <script>
     function onlyNumberKey(evt) {
 
@@ -74,3 +122,11 @@
 
 
 </script>
+</html>
+@section Scripts{
+    <script src="~/js/DataTable.js"></script>
+
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+}

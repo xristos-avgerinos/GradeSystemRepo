@@ -2,123 +2,185 @@
 @inject IHttpContextAccessor httpContext
 
 @{
-    ViewData["Title"] = "Edit";
+    ViewData["Title"] = "Δήλωση Μαθήματος σε Μαθητή";
 }
 
-@if(ViewBag.Students.Count == 0)
-{
-    <h2>Δεν Υπαρχουν Φοιτητες Προς Ανάθεση Μαθήματος</h2>
-}
-else
-{
-    <div class="row">
-        <div class="col-md-12 col-lg-12 col-sm-12">
-            <div class="white-box row align-items-center">
-
-                <form action="AssignCourseToStudent" method="post">
-
-                    <h3>Επίλεξε Φοιτητή:</h3>
-
-                    <select class="form-select" name="SelectedStudentId" id="SelectedStudentId" onchange="this.form.submit()">
-                        <option value="" selected disabled hidden>Επίλεξε εδώ</option>
-                        @foreach (var item in ViewBag.Students)
-                        {
-                            @if (ViewBag.Selected == item.RegistrationNumber)
-                            {
-
-                                <option value="@item.RegistrationNumber" selected> @item.RegistrationNumber @item.Name @item.Surname</option>
-
-                            }
-                            else
-                            {
-                                <option value="@item.RegistrationNumber"> @item.RegistrationNumber @item.Name @item.Surname</option>
-                            }
+<html>
+<head>
+    <link href="~/css/style.min.css" rel="stylesheet">
+    <meta charset="UTF-8">
 
 
-                        }
+    <style>
+        .user-bg .overlay-box {
+            background: #6190b7;
+            opacity: 0.85;
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 100%;
+            text-align: center
+        }
 
-                    </select>
+        #Selected {
+            width: 250px;
+        }
 
-                </form>
+        #Selected option {
+            width: 250px;
+        }
+    </style>
+</head>
+<body>
+
+
+    <div class="page-wrapper border">
+
+        
+        <!-- Container fluid  -->
+        <!-- ============================================================== -->
+        <div class="container-fluid " style="background-color: #F7F7F7">
+
+
+            @if (ViewBag.Students.Count == 0)
+            {
+                <h2>Δεν Υπαρχουν Φοιτητες Προς Ανάθεση Μαθήματος</h2>
+            }
+            else
+            {
+            
+
+            <div class="container row p-0 m-0">
+
+                <div class="col-12 border p-3" style="background-color: white">
+
+                        <form action="AssignCourseToStudent" method="post">
+
+                            <h3>Επίλεξε Φοιτητή:</h3>
+
+                            <select class="form-select" name="SelectedStudentId" id="SelectedStudentId" onchange="this.form.submit()">
+                                <option value="" selected disabled hidden>Επίλεξε εδώ</option>
+                                @foreach (var item in ViewBag.Students)
+                                {
+                                    @if (ViewBag.Selected == item.RegistrationNumber)
+                                    {
+
+                                        <option value="@item.RegistrationNumber" selected> @item.RegistrationNumber @item.Name @item.Surname</option>
+
+                                    }
+                                    else
+                                    {
+                                        <option value="@item.RegistrationNumber"> @item.RegistrationNumber @item.Name @item.Surname</option>
+                                    }
+
+
+                                }
+
+                            </select>
+
+                        </form>
+                    
+                    <br />
+
+                    @if (ViewBag.Selected != null)
+                    {
+                            <div class="row">
+                                <div class="col-md-4">
+                                    <form asp-action="AssignCourseToStudent" method="post">
+                                        <div class="form-group">
+                                            <label asp-for="RegistrationNumber" class="control-label">Αριθμός Καταχώρησης</label>
+                                            <input readonly name="SelectedStudentId" id="SelectedStudentId" asp-for="RegistrationNumber" class="form-control" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Name" class="control-label">Όνομα Φοιτητή</label>
+                                            <input readonly asp-for="Name" class="form-control" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label asp-for="Surname" class="control-label">Επώνυμο Φοιτητή</label>
+                                            <input readonly asp-for="Surname" class="form-control" />
+                                        </div>
+                                        <div class="form-group">
+                                            <label class="form-label h6" for="form3Example4" asp-for="Department">Τμημα</label>
+                                            <select id="departments" asp-for="Department">
+                                                @foreach (var item in Enum.GetNames(typeof(Departments)))
+                                                {
+                                                    if (item.Equals(@httpContext.HttpContext.Session.GetString("department")))
+                                                    {
+                                                        <option value="@item">@item</option>
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@item" disabled>@item</option>
+                                                    }
+
+                                                }
+                                            </select>
+
+                                        </div>
+                                        @if (ViewBag.Courses.Count == 0)
+                                        {
+                                            <h2>Δεν Υπαρχουν Μαθήματα Προς Ανάθεση</h2>
+                                        }
+                                        else
+                                        {
+                                            <select required class="form-select" name="SelectedCourseId" id="SelectedCourseId">
+                                                <option value="" selected disabled hidden>Επίλεξε Μάθημα</option>
+                                                @foreach (var item in ViewBag.Courses)
+                                                {
+                                                    @if (ViewBag.SelectedCourseId == item.IdCourse)
+                                                    {
+
+                                                        <option value="@item.IdCourse" selected> @item.IdCourse @item.CourseTitle </option>
+
+                                                    }
+                                                    else
+                                                    {
+                                                        <option value="@item.IdCourse"> @item.IdCourse @item.CourseTitle </option>
+                                                    }
+
+
+                                                }
+
+                                            </select>
+                                            <br />
+
+
+                                            <div class="form-group">
+                                                <input type="submit" value="Δήλωση" class="btn btn-primary" />
+                                            </div>
+                                        }
+
+
+                                    </form>
+                                </div>
+                                @if (ViewBag.flag is true)
+                                {
+                                    <h3 style="color:green">Το μάθημα δηλώθηκε με επιτυχία</h3>
+                                }
+                            </div>
+                        
+                    }
+                </div>
             </div>
+
+            }
+                   
+
         </div>
+
     </div>
 
-    @if (ViewBag.Selected != null)
-    {
-       
-        <hr />
-        <div class="row">
-            <div class="col-md-4">
-                <form asp-action="AssignCourseToStudent" method="post">
-                    <div class="form-group">
-                        <label asp-for="RegistrationNumber" class="control-label"></label>
-                        <input readonly name="SelectedStudentId" id="SelectedStudentId" asp-for="RegistrationNumber" class="form-control" />
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Name" class="control-label"></label>
-                        <input readonly asp-for="Name" class="form-control" />
-                    </div>
-                    <div class="form-group">
-                        <label asp-for="Surname" class="control-label"></label>
-                        <input readonly asp-for="Surname" class="form-control" />
-                    </div>
-                    <div class="form-group">
-                        <label class="form-label h6" for="form3Example4" asp-for="Department">Τμημα</label>
-                        <select id="departments" asp-for="Department">
-                            @foreach (var item in Enum.GetNames(typeof(Departments)))
-                            {
-                                if (item.Equals(@httpContext.HttpContext.Session.GetString("department")))
-                                {
-                                    <option value="@item">@item</option>
-                                }
-                                else
-                                {
-                                    <option value="@item" disabled>@item</option>
-                                }
+    <br/>
+    <br/>
+    <br />
+    
+</body>
 
-                            }
-                        </select>
-                    </div>
-                    @if (ViewBag.Courses.Count == 0)
-                    {
-                        <h2>Δεν Υπαρχουν Μαθήματα Προς Ανάθεση</h2>
-                    }
-                    else
-                    {
-                        <select class="form-select" name="SelectedCourseId" id="SelectedCourseId">
-                            <option value="" selected disabled hidden>Επίλεξε Μάθημα</option>
-                            @foreach (var item in ViewBag.Courses)
-                            {
-                                @if (ViewBag.SelectedCourseId == item.IdCourse)
-                                {
-
-                                    <option value="@item.IdCourse" selected> @item.IdCourse @item.CourseTitle </option>
-
-                                }
-                                else
-                                {
-                                    <option value="@item.IdCourse"> @item.IdCourse @item.CourseTitle </option>
-                                }
-
-
-                            }
-
-                        </select>
-                        <div class="form-group">
-                            <input type="submit" value="Save" class="btn btn-primary" />
-                        </div>
-                    }
-
-                    
-                </form>
-            </div>
-        </div>
+</html>
+@section Scripts{
+    <script src="~/js/DataTable.js"></script>
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
     }
-
-}
-
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
 }

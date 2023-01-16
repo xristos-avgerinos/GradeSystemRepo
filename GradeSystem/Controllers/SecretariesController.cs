@@ -298,9 +298,16 @@ namespace GradeSystem.Controllers
                     cs.IdCourse = (int)SelectedCourseId;
                     cs.RegistrationNumber = SelectedStudentId;
 
-                    _context.Add(cs);
-                    _context.SaveChanges();
+                    CourseHasStudent tmpcourse;
+                    tmpcourse=_context.CourseHasStudents.FirstOrDefault(c => c.IdCourse == (int)SelectedCourseId && c.RegistrationNumber==SelectedStudentId);
+                    if (tmpcourse == null)
+                    {
+                        _context.Add(cs);
+                        _context.SaveChanges();
+                    }
+                    
 
+                    ViewBag.flag = true;
 
                 }
 
