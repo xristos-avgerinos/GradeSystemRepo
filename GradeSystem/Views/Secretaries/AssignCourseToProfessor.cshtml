@@ -1,0 +1,100 @@
+﻿@model GradeSystem.Models.Course
+
+@{
+    ViewData["Title"] = "Edit";
+}
+
+@if(ViewBag.Courses.Count == 0)
+{
+    <h2>Δεν Υπαρχουν Μαθηματα Προς Αναθεση Καθηγητη</h2>
+}
+else
+{
+    <div class="row">
+        <div class="col-md-12 col-lg-12 col-sm-12">
+            <div class="white-box row align-items-center">
+
+                <form action="AssignCourseToProfessor" method="post">
+
+                    <h3>Επίλεξε Μάθημα:</h3>
+
+                    <select class="form-select" name="SelectedCourseId" id="SelectedCourseId" onchange="this.form.submit()">
+                        <option value="" selected disabled hidden>Επίλεξε εδώ</option>
+                        @foreach (var item in ViewBag.Courses)
+                        {
+                            @if (ViewBag.Selected == item.IdCourse)
+                            {
+
+                                <option value="@item.IdCourse" selected> @item.IdCourse @item.CourseTitle</option>
+
+                            }
+                            else
+                            {
+                                <option value="@item.IdCourse"> @item.IdCourse @item.CourseTitle</option>
+                            }
+
+
+                        }
+
+                    </select>
+
+                </form>
+            </div>
+        </div>
+    </div>
+
+    @if (ViewBag.Selected != null)
+    {
+        <h1>Edit</h1>
+
+        <h4>Course</h4>
+        <hr />
+        <div class="row">
+            <div class="col-md-4">
+                <form asp-action="AssignCourseToProfessor" method="post">
+                    <div class="form-group">
+                        <label asp-for="IdCourse" class="control-label"></label>
+                        <input readonly name="SelectedCourseId" id="SelectedCourseId" asp-for="IdCourse" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="CourseTitle" class="control-label"></label>
+                        <input readonly asp-for="CourseTitle" class="form-control" />
+                    </div>
+                    <div class="form-group">
+                        <label asp-for="CourseSemester" class="control-label"></label>
+                        <input readonly asp-for="CourseSemester" class="form-control" />
+                    </div>
+                    <select class="form-select" name="SelectedAfm" id="SelectedAfm">
+                        <option value="" selected disabled hidden>Επίλεξε καθηγητη</option>
+                        @foreach (var item in ViewBag.professors)
+                        {
+                            @if (ViewBag.SelectedAfm == item.Afm)
+                            {
+
+                                <option value="@item.Afm" selected> @item.Afm @item.Name @item.Surname</option>
+
+                            }
+                            else
+                            {
+                                <option value="@item.Afm"> @item.Afm @item.Name @item.Surname</option>
+                            }
+
+
+                        }
+
+                    </select>
+
+                    <div class="form-group">
+                        <input type="submit" value="Save" class="btn btn-primary" />
+                    </div>
+                </form>
+            </div>
+        </div>
+    }
+
+}
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

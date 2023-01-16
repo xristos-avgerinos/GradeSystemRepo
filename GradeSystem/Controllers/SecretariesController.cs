@@ -6,6 +6,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GradeSystem.Models;
+using Microsoft.AspNetCore.Identity;
+using System.Drawing;
+using System.Diagnostics;
 
 namespace GradeSystem.Controllers
 {
@@ -59,7 +62,7 @@ namespace GradeSystem.Controllers
             }
         }
 
-        
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.Any, NoStore = true)]
         public IActionResult InsertCourses()
         {
 
@@ -75,160 +78,270 @@ namespace GradeSystem.Controllers
   
         [HttpPost]
         [ValidateAntiForgeryToken]
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.Any, NoStore = true)]
         public async Task<IActionResult> InsertCourses(Course course)
         {
-            if (ModelState.IsValid)
+            if (HttpContext.Session.GetString("Secretarie") != null)
             {
-                
-                _context.Add(course);
-                await _context.SaveChangesAsync();
-                return RedirectToAction(nameof(Index));
-            }
-           
-            return View(course);
-        }
 
-
-
-
-        /*
-                // GET: Secretaries/Details/5
-                public async Task<IActionResult> Details(int? id)
+                if (ModelState.IsValid)
                 {
-                    if (id == null || _context.Secretaries == null)
-                    {
-                        return NotFound();
-                    }
 
-                    var secretary = await _context.Secretaries
-                        .Include(s => s.User)
-                        .FirstOrDefaultAsync(m => m.Phonenumber == id);
-                    if (secretary == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return View(secretary);
-                }
-
-                // GET: Secretaries/Create
-                public IActionResult Create()
-                {
-                    ViewData["Username"] = new SelectList(_context.Users, "Username", "Username");
-                    return View();
-                }
-
-                // POST: Secretaries/Create
-                // To protect from overposting attacks, enable the specific properties you want to bind to.
-                // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-                [HttpPost]
-                [ValidateAntiForgeryToken]
-                public async Task<IActionResult> Create([Bind("Phonenumber,Name,Surname,Department,Username")] Secretary secretary)
-                {
-                    if (ModelState.IsValid)
-                    {
-                        _context.Add(secretary);
-                        await _context.SaveChangesAsync();
-                        return RedirectToAction(nameof(Index));
-                    }
-                    ViewData["Username"] = new SelectList(_context.Users, "Username", "Username", secretary.Username);
-                    return View(secretary);
-                }
-
-                // GET: Secretaries/Edit/5
-                public async Task<IActionResult> Edit(int? id)
-                {
-                    if (id == null || _context.Secretaries == null)
-                    {
-                        return NotFound();
-                    }
-
-                    var secretary = await _context.Secretaries.FindAsync(id);
-                    if (secretary == null)
-                    {
-                        return NotFound();
-                    }
-                    ViewData["Username"] = new SelectList(_context.Users, "Username", "Username", secretary.Username);
-                    return View(secretary);
-                }
-
-                // POST: Secretaries/Edit/5
-                // To protect from overposting attacks, enable the specific properties you want to bind to.
-                // For more details, see http://go.microsoft.com/fwlink/?LinkId=317598.
-                [HttpPost]
-                [ValidateAntiForgeryToken]
-                public async Task<IActionResult> Edit(int id, [Bind("Phonenumber,Name,Surname,Department,Username")] Secretary secretary)
-                {
-                    if (id != secretary.Phonenumber)
-                    {
-                        return NotFound();
-                    }
-
-                    if (ModelState.IsValid)
-                    {
-                        try
-                        {
-                            _context.Update(secretary);
-                            await _context.SaveChangesAsync();
-                        }
-                        catch (DbUpdateConcurrencyException)
-                        {
-                            if (!SecretaryExists(secretary.Phonenumber))
-                            {
-                                return NotFound();
-                            }
-                            else
-                            {
-                                throw;
-                            }
-                        }
-                        return RedirectToAction(nameof(Index));
-                    }
-                    ViewData["Username"] = new SelectList(_context.Users, "Username", "Username", secretary.Username);
-                    return View(secretary);
-                }
-
-                // GET: Secretaries/Delete/5
-                public async Task<IActionResult> Delete(int? id)
-                {
-                    if (id == null || _context.Secretaries == null)
-                    {
-                        return NotFound();
-                    }
-
-                    var secretary = await _context.Secretaries
-                        .Include(s => s.User)
-                        .FirstOrDefaultAsync(m => m.Phonenumber == id);
-                    if (secretary == null)
-                    {
-                        return NotFound();
-                    }
-
-                    return View(secretary);
-                }
-
-                // POST: Secretaries/Delete/5
-                [HttpPost, ActionName("Delete")]
-                [ValidateAntiForgeryToken]
-                public async Task<IActionResult> DeleteConfirmed(int id)
-                {
-                    if (_context.Secretaries == null)
-                    {
-                        return Problem("Entity set 'DBContext.Secretaries'  is null.");
-                    }
-                    var secretary = await _context.Secretaries.FindAsync(id);
-                    if (secretary != null)
-                    {
-                        _context.Secretaries.Remove(secretary);
-                    }
-
+                    _context.Add(course);
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
 
-                private bool SecretaryExists(int id)
+                return View(course);
+            }
+            else
+            {
+                return RedirectToAction("UsersLogin", "Users");
+            }
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.Any, NoStore = true)]
+        public IActionResult InsertProfessors()
+        {
+
+            if (HttpContext.Session.GetString("Secretarie") != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("UsersLogin", "Users");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.Any, NoStore = true)]
+        public async Task<IActionResult> InsertProfessors(Professor professor)
+        {
+            if (HttpContext.Session.GetString("Secretarie") != null)
+            {
+                professor.Username = "p" + professor.Afm;
+                User user = _context.Users.FirstOrDefault(u => u.Username.Equals(professor.Username));
+
+                if (user == null)
                 {
-                  return _context.Secretaries.Any(e => e.Phonenumber == id);
-                }*/
+
+                    user = new User();
+                    user.Username = professor.Username;
+                    user.Password = professor.Username;
+                    user.Role = "Professor";
+                    professor.User = user;
+
+                    _context.Add(professor);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction(nameof(Index));
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Το ΑΦΜ υπάρχει ήδη");
+                }
+
+                return View(professor);
+
+            }
+            else
+            {
+                return RedirectToAction("UsersLogin", "Users");
+            }
+        }
+
+
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.Any, NoStore = true)]
+        public IActionResult InsertStudents()
+        {
+
+            if (HttpContext.Session.GetString("Secretarie") != null)
+            {
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("UsersLogin", "Users");
+            }
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.Any, NoStore = true)]
+        public async Task<IActionResult> InsertStudents(Student student)
+        {
+            if (HttpContext.Session.GetString("Secretarie") != null)
+            {
+
+                User user = _context.Users.FirstOrDefault(u => u.Username.Equals(student.Username));
+
+                if (user == null)
+                {
+
+                    user = new User();
+                    user.Username = student.Username;
+                    user.Password = student.Username;
+                    user.Role = "Student";
+                    student.User = user;
+
+                    _context.Add(student);
+                    await _context.SaveChangesAsync();
+
+                    return RedirectToAction(nameof(Index));
+
+                }
+                else
+                {
+                    ModelState.AddModelError(string.Empty, "Το username υπάρχει ήδη");
+                }
+
+                return View(student);
+
+            }
+            else
+            {
+                return RedirectToAction("UsersLogin", "Users");
+            }
+        }
+
+
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.Any, NoStore = true)]
+        public IActionResult AssignCourseToProfessor()
+        {
+            if (HttpContext.Session.GetString("Secretarie") != null)
+            {
+                CoursesListWithoutProfessor();
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("UsersLogin", "Users");
+            }
+           
+            
+        }
+        
+        [HttpPost]
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.Any, NoStore = true)]
+        public IActionResult AssignCourseToProfessor(int SelectedCourseId,int? SelectedAfm)
+        {
+
+            if (HttpContext.Session.GetString("Secretarie") != null)
+            {
+
+                Course course = _context.Courses.FirstOrDefault(s => s.IdCourse == SelectedCourseId);
+                
+
+                if (SelectedAfm != null)
+                {
+
+                    course.Afm = SelectedAfm;
+                    _context.Update(course);
+                    _context.SaveChanges();
+
+                    CoursesListWithoutProfessor();
+                    return View();
+
+
+                }
+
+                CoursesListWithoutProfessor();
+                string department = HttpContext.Session.GetString("department");
+                var professors = _context.Professors.Where(s=>s.Department.Equals(department)).Select(s => new { s.Name, s.Surname, s.Afm });
+                ViewBag.professors = professors.ToList();
+
+                ViewBag.Selected = SelectedCourseId;
+
+
+                return View(course);
+            }
+            else
+            {
+                return RedirectToAction("UsersLogin", "Users");
+            }
+           
+        }
+
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.Any, NoStore = true)]
+        public IActionResult AssignCourseToStudent()
+        {
+            if (HttpContext.Session.GetString("Secretarie") != null)
+            {
+                AllStudents();
+
+                return View();
+            }
+            else
+            {
+                return RedirectToAction("UsersLogin", "Users");
+            }
+
+
+        }
+
+        [HttpPost]
+        [ResponseCache(Duration = 0, Location = ResponseCacheLocation.Any, NoStore = true)]
+        public IActionResult AssignCourseToStudent(int SelectedStudentId, int? SelectedCourseId)
+        {
+
+            if (HttpContext.Session.GetString("Secretarie") != null)
+            {
+
+                
+                if (SelectedCourseId != null)
+                {
+
+                    CourseHasStudent cs = new CourseHasStudent();
+                    cs.IdCourse = (int)SelectedCourseId;
+                    cs.RegistrationNumber = SelectedStudentId;
+
+                    _context.Add(cs);
+                    _context.SaveChanges();
+
+
+                }
+
+                Student student = _context.Students.FirstOrDefault(s => s.RegistrationNumber == SelectedStudentId);
+                AllStudents();
+
+                string department = HttpContext.Session.GetString("department");
+                var temp_lessons1 = _context.Courses.Include(c => c.Professor).Where(c => c.Afm != null && c.Professor.Department.Equals(department)).Select(c => new { c.IdCourse, c.CourseTitle });
+
+
+                var temp_lessons2 = _context.CourseHasStudents.Include(s=>s.Course).Where(s => s.RegistrationNumber == SelectedStudentId).Select(c=> new { c.IdCourse, c.Course.CourseTitle });
+
+                var lessons = temp_lessons1.Except(temp_lessons2);
+                ViewBag.Courses = lessons.ToList();
+
+                ViewBag.Selected = SelectedStudentId;
+
+
+                return View(student);
+            }
+            else
+            {
+                return RedirectToAction("UsersLogin", "Users");
+            }
+
+        }
+
+        void CoursesListWithoutProfessor()
+        {
+            var lessons = _context.Courses.Where(s => s.Afm == null).Select(s => new { s.IdCourse, s.CourseTitle });
+            ViewBag.Courses = lessons.ToList();
+
+        }
+
+
+        void AllStudents()
+        {
+            string department = HttpContext.Session.GetString("department");
+            var Students = _context.Students.Where(s => s.Department.Equals(department)).Select(s => new { s.RegistrationNumber, s.Name, s.Surname });
+            ViewBag.Students = Students.ToList();
+        }
+
     }
 }

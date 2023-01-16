@@ -9,6 +9,7 @@ builder.Services.AddControllersWithViews();
 builder.Services.AddDbContext<DBContext>(options => 
 options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 builder.Services.AddSession();
+builder.Services.AddHttpContextAccessor();
 
 
 var app = builder.Build();
@@ -34,3 +35,12 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+public enum Departments
+{
+    Touristics,
+    Informatics,
+    Economics
+  
+
+}

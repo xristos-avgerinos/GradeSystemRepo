@@ -1,0 +1,59 @@
+﻿@model GradeSystem.Models.Student
+@inject IHttpContextAccessor httpContext
+
+@{
+    ViewData["Title"] = "View";
+}
+
+
+<h1>View</h1>
+
+<h4>Student</h4>
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="InsertStudents">          
+            <div class="form-group">
+                <label asp-for="Name" class="control-label"></label>
+                <input required asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Surname" class="control-label"></label>
+                <input required asp-for="Surname" class="form-control" />
+                <span asp-validation-for="Surname" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="form-label h6" for="form3Example4" asp-for="Department">Τμημα</label>
+                <select id="departments" asp-for="Department">
+                    @foreach (var item in Enum.GetNames(typeof(Departments)))
+                    {
+                        if (item.Equals(@httpContext.HttpContext.Session.GetString("department")))
+                        {
+                            <option value="@item">@item</option>
+                        }
+                        else
+                        {
+                            <option value="@item" disabled>@item</option>
+                        }
+
+                    }
+                </select>
+                <span asp-validation-for="Department" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="Username" class="control-label"></label>
+                <input required minlength = "6" maxlength="6" asp-for="Username" class="form-control" />
+                <span asp-validation-for="Username" class="text-danger"></span>
+            </div>
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
