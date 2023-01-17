@@ -30,6 +30,16 @@
         #Selected option {
             width: 250px;
         }
+
+        input[type='number'] {
+            width: 140px;
+        }
+
+        table, tr, th, td {
+            text-align: center;
+        }
+
+       
     </style>
 </head>
 <body>
@@ -62,12 +72,12 @@
                                 @if (ViewBag.Selected == item.IdCourse)
                                 {
 
-                                    <option value="@item.IdCourse" selected> @item.IdCourse @item.CourseTitle</option>
+                                    <option value="@item.IdCourse" selected> Κωδικός Μαθήματος: @item.IdCourse, Τίτλος Μαθήματος: @item.CourseTitle</option>
 
                                 }
                                 else
                                 {
-                                    <option value="@item.IdCourse"> @item.IdCourse @item.CourseTitle</option>
+                                    <option value="@item.IdCourse"> Κωδικός Μαθήματος: @item.IdCourse, Τίτλος Μαθήματος: @item.CourseTitle</option>
                                 }
 
 
@@ -86,19 +96,19 @@
                             <thead>
                                 <tr>
                                     <th>
-                                        Τμημα
+                                        Τμήμα
                                     </th>
                                     <th>
-                                        κωδικος φοιτητη
+                                        Κωδικός Φοιτητή
                                     </th>
                                     <th>
-                                        Ονομα φοιτητη
+                                        Ονομα Φοιτητή
                                     </th>
                                     <th>
-                                        Επωνυμο Φοιτητη
+                                        Επόνυμο Φοιτητή
                                     </th>
                                     <th>
-                                        Βαθμος Φοιτητη
+                                        Βαθμός Φοιτητή
                                     </th>
 
 
@@ -122,13 +132,13 @@
                                         @Html.DisplayFor(modelItem => item.Student.Surname)
                                     </td>
                                     <td>
-                                        <form method="post" action="InsertGrades" onSubmit="if(!confirm('Are you sure you want to post grade?')){return false;}">
-                                            <input id="grade" name="grade" form-control-lg type="number" min="0" max="10" placeholder="Εισάγετε Βαθμο" />
+                                        <form method="post" action="InsertGrades" onSubmit="if(!confirm('Είστε σίγουροι οτι θέλετε να υποβάλετε αυτο το βαθμό;')){return false;}">
+                                            <input id="grade" required name="grade" form-control-lg type="number" min="0" max="10" placeholder="Εισάγετε Βαθμο" />
 
                                             <input hidden id="SelectedCourseId" name="SelectedCourseId" value="@item.IdCourse">
                                             <input hidden id="RegNum" name="RegNum" value="@item.RegistrationNumber">
 
-                                            <button type="submit" value="submit" onClick='doAction("Submit", "Are you sure want to post grade?");'>Submit</button>
+                                            <button type="submit" value="submit">Υποβολή Βαθμού</button>
 
                                         </form>
                                     </td>

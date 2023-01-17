@@ -38,9 +38,11 @@ app.Run();
 
 public enum Departments
 {
-    Touristics,
-    Informatics,
-    Economics
+    Τουριστικά,
+    Πληροφορική,
+    Οικονομικά,
+    Ναυτιλικά,
+    Στατιστική
   
 
 }

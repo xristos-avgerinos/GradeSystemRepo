@@ -29,6 +29,10 @@
         #Selected option {
             width: 250px;
         }
+
+        table, tr, th, td {
+            text-align: center;
+        }
     </style>
 </head>
 <body>
@@ -60,12 +64,12 @@
                                 @if (ViewBag.Selected == item.IdCourse)
                                 {
 
-                                    <option value="@item.IdCourse" selected> @item.IdCourse @item.CourseTitle</option>
+                                    <option value="@item.IdCourse" selected> Κωδικός Μαθήματος: @item.IdCourse, Τίτλος Μαθήματος: @item.CourseTitle</option>
 
                                 }
                                 else
                                 {
-                                    <option value="@item.IdCourse"> @item.IdCourse @item.CourseTitle</option>
+                                    <option value="@item.IdCourse"> Κωδικός Μαθήματος: @item.IdCourse, Τίτλος Μαθήματος: @item.CourseTitle</option>
                                 }
 
 
@@ -87,16 +91,16 @@
                                         Τμημα
                                     </th>
                                     <th>
-                                        κωδικος φοιτητη
+                                        Κωδικός Φοιτητή
                                     </th>
                                     <th>
-                                        Ονομα φοιτητη
+                                        Ονομα Φοιτητή
                                     </th>
                                     <th>
-                                        Επωνυμο Φοιτητη
+                                        Επώνυμο Φοιτητή
                                     </th>
                                     <th>
-                                        Βαθμος Φοιτητη
+                                        Βαθμός Φοιτητή
                                     </th>
 
 

@@ -29,6 +29,8 @@
         #Selected option {
             width: 250px;
         }
+
+      
     </style>
 </head>
 <body>
@@ -65,12 +67,12 @@
                                 @if (ViewBag.Selected == item.IdCourse)
                                 {
 
-                                    <option value="@item.IdCourse" selected> @item.IdCourse @item.CourseTitle</option>
+                                        <option value="@item.IdCourse" selected> Κωδικός Μαθήματος: @item.IdCourse, Τίτλος Μαθήματος: @item.CourseTitle</option>
 
                                 }
                                 else
                                 {
-                                    <option value="@item.IdCourse"> @item.IdCourse @item.CourseTitle</option>
+                                        <option value="@item.IdCourse"> Κωδικός Μαθήματος: @item.IdCourse, Τίτλος Μαθήματος: @item.CourseTitle</option>
                                 }
 
 
@@ -98,28 +100,28 @@
                                             <label asp-for="CourseSemester" class="control-label"></label>
                                             <input readonly asp-for="CourseSemester" class="form-control" />
                                         </div>
-                                        <select class="form-select" name="SelectedAfm" id="SelectedAfm">
+                                        <select required class="form-select" name="SelectedAfm" id="SelectedAfm">
                                             <option value="" selected disabled hidden>Επίλεξε καθηγητη</option>
                                             @foreach (var item in ViewBag.professors)
                                             {
                                                 @if (ViewBag.SelectedAfm == item.Afm)
                                                 {
 
-                                                    <option value="@item.Afm" selected> @item.Afm @item.Name @item.Surname</option>
+                                                    <option value="@item.Afm" selected> ΑΦΜ: @item.Afm, Ονομα: @item.Name, Επώνυμο: @item.Surname</option>
 
                                                 }
                                                 else
                                                 {
-                                                    <option value="@item.Afm"> @item.Afm @item.Name @item.Surname</option>
+                                                    <option value="@item.Afm"> ΑΦΜ: @item.Afm, Ονομα: @item.Name, Επώνυμο: @item.Surname</option>
                                                 }
 
 
                                             }
 
                                         </select>
-
+                                        <br>
                                         <div class="form-group">
-                                            <input type="submit" value="Save" class="btn btn-primary" />
+                                            <input type="submit" value="Ανάθεση" class="btn btn-primary" />
                                         </div>
                                     </form>
                                 </div>

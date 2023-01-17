@@ -2,7 +2,7 @@
 @inject IHttpContextAccessor httpContext
 
 @{
-    ViewData["Title"] = "Εισαγωγή Μαθητή";
+    ViewData["Title"] = "Εισαγωγή Φοιτητή";
 }
 
 <html>
@@ -42,7 +42,7 @@
         <!-- ============================================================== -->
         <div class="container-fluid " style="background-color: white">
 
-            <h3>Εισαγωγή Μαθητή</h3>
+            <h3>Εισαγωγή Φοιτητή</h3>
 
             <div class="container row p-0 m-0">
 
@@ -52,12 +52,12 @@
                         <div class="col-md-4">
                             <form asp-action="InsertStudents">
                                 <div class="form-group">
-                                    <label asp-for="Name" class="control-label">Όνομα Μαθητή</label>
+                                    <label asp-for="Name" class="control-label">Όνομα Φοιτητή</label>
                                     <input required asp-for="Name" class="form-control" />
                                     <span asp-validation-for="Name" class="text-danger"></span>
                                 </div>
                                 <div class="form-group">
-                                    <label asp-for="Surname" class="control-label">Επώνυμο Μαθητή</label>
+                                    <label asp-for="Surname" class="control-label">Επώνυμο Φοιτητή</label>
                                     <input required asp-for="Surname" class="form-control" />
                                     <span asp-validation-for="Surname" class="text-danger"></span>
                                 </div>

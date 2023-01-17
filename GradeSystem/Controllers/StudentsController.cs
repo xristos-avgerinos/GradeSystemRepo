@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using GradeSystem.Models;
+using Microsoft.IdentityModel.Tokens;
+using Microsoft.AspNetCore.Http;
 
 namespace GradeSystem.Controllers
 {
@@ -60,9 +62,17 @@ namespace GradeSystem.Controllers
             {
                 String username = HttpContext.Session.GetString("Student");
 
-                int max_semester = Int32.Parse(_context.CourseHasStudents.Include(s => s.Student).Include(s => s.Course).Where(s => s.Student.Username.Equals(username) && s.GradeCourseStudent != null).Max(s=>s.Course.CourseSemester));
-                ViewBag.max_sem = max_semester;
-                HttpContext.Session.SetInt32("max_sem",max_semester);
+                string max_semester = _context.CourseHasStudents.Include(s => s.Student).Include(s => s.Course).Where(s => s.Student.Username.Equals(username) && s.GradeCourseStudent != null).Max(s=>s.Course.CourseSemester);
+                if (max_semester.IsNullOrEmpty())
+                {
+                    ViewBag.max_sem = 0;
+                }
+                else
+                {
+                    ViewBag.max_sem = Int32.Parse(max_semester);
+                    HttpContext.Session.SetInt32("max_sem", Int32.Parse(max_semester));
+                }
+                
 
                 var gradesBySemester = _context.CourseHasStudents.Include(s => s.Student).Include(s => s.Course).Where(s=>s.Course.CourseSemester.Equals("1") && s.Student.Username.Equals(username) && s.GradeCourseStudent != null);
                 ViewBag.Selected = 1;
@@ -105,7 +115,14 @@ namespace GradeSystem.Controllers
                 var gradesAvg = _context.CourseHasStudents.Include(s => s.Student).Include(s => s.Course).Where(s => s.Student.Username.Equals(username) && s.GradeCourseStudent >= 5).Average(s=>s.GradeCourseStudent);
                 int coursesCount = _context.CourseHasStudents.Include(s => s.Student).Where(s => s.Student.Username.Equals(username) && s.GradeCourseStudent>=5).Count();
                 ViewBag.coursesCount = coursesCount;
-                ViewBag.gradesAvg = System.Math.Round((double)gradesAvg,2);
+                if (gradesAvg == null)
+                {
+                    ViewBag.gradesAvg = 0;
+                }
+                else
+                {
+                    ViewBag.gradesAvg = System.Math.Round((double)gradesAvg, 2);
+                }
 
                 return View();
             }
