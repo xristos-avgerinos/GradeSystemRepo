@@ -22,13 +22,13 @@
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="UsersLogin"> Σύνδεση χρήστη</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Users" asp-action="UsersLogin"> Σύνδεση Χρήστη</a>
                         </li>
                         
                         @if (httpContext.HttpContext.Session.GetString("Student") != null)
                         {
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">Φοιτητές</a>
+                                <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">Φοιτητής</a>
                                 <ul class="dropdown-menu" aria-labelledby="dropdown03">
                                     <li><a class="dropdown-item" asp-area="" asp-controller="Students" asp-action="Index">Προφίλ Χρήστη</a></li>
                                     <li><a class="dropdown-item" asp-area="" asp-controller="Students" asp-action="SelectAll">Προβολή βαθμολογίας ανά μάθημα</a></li>
@@ -40,7 +40,7 @@
                         else if (httpContext.HttpContext.Session.GetString("Professor") != null)
                         {
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">Καθηγητές</a>
+                                <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">Καθηγητής</a>
                                 <ul class="dropdown-menu" aria-labelledby="dropdown03">
                                     <li><a class="dropdown-item" asp-area="" asp-controller="Professors" asp-action="Index">Προφίλ Χρήστη</a></li>
                                     <li><a class="dropdown-item" asp-area="" asp-controller="Professors" asp-action="SelectByLesson">Προβολη Βαθμολογιας Ανα Μαθημα</a></li>
@@ -55,9 +55,9 @@
                                 <ul class="dropdown-menu" aria-labelledby="dropdown03">
                                     <li><a class="dropdown-item" asp-area="" asp-controller="Secretaries" asp-action="Index">Προφίλ Χρήστη</a></li>
                                     <li><a class="dropdown-item" asp-area="" asp-controller="Secretaries" asp-action="SelectCourses">Προβολη Μαθημάτων</a></li>
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="Secretaries" asp-action="InsertCourses"> Καταχώρηση Μαθημάτων</a></li>
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="Secretaries" asp-action="InsertProfessors"> Καταχώρηση Καθηγητών</a></li>
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="Secretaries" asp-action="InsertStudents"> Καταχώρηση Φοιτητων</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Secretaries" asp-action="InsertCourses"> Καταχώρηση Μαθήματος</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Secretaries" asp-action="InsertProfessors"> Καταχώρηση Καθηγητή</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Secretaries" asp-action="InsertStudents"> Καταχώρηση Φοιτητή</a></li>
                                     <li><a class="dropdown-item" asp-area="" asp-controller="Secretaries" asp-action="AssignCourseToProfessor">Ανάθεση μαθήματος σε Καθηγητή</a></li>
                                     <li><a class="dropdown-item" asp-area="" asp-controller="Secretaries" asp-action="AssignCourseToStudent">Δήλωση μαθήματος σε Φοιτητη</a></li>
                                 </ul>
@@ -66,7 +66,7 @@
                         else
                         {
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">Φοιτητές</a>
+                                <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">Φοιτητής</a>
                                 <ul class="dropdown-menu" aria-labelledby="dropdown03">
                                     <li><a class="dropdown-item" asp-area="" asp-controller="Students" asp-action="Index">Προφίλ Χρήστη</a></li>
                                     <li><a class="dropdown-item" asp-area="" asp-controller="Students" asp-action="SelectAll">Προβολή βαθμολογίας ανά μάθημα</a></li>
@@ -75,7 +75,7 @@
                                 </ul>
                             </li>
                             <li class="nav-item dropdown">
-                                <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">Καθηγητές</a>
+                                <a class="nav-link dropdown-toggle" href="#" id="dropdown03" data-bs-toggle="dropdown" aria-expanded="false">Καθηγητής</a>
                                 <ul class="dropdown-menu" aria-labelledby="dropdown03">
                                     <li><a class="dropdown-item" asp-area="" asp-controller="Professors" asp-action="Index">Προφίλ Χρήστη</a></li>
                                     <li><a class="dropdown-item" asp-area="" asp-controller="Professors" asp-action="SelectByLesson">Προβολη Βαθμολογιας Ανα Μαθημα</a></li>
@@ -87,9 +87,9 @@
                                 <ul class="dropdown-menu" aria-labelledby="dropdown03">
                                     <li><a class="dropdown-item" asp-area="" asp-controller="Secretaries" asp-action="Index">Προφίλ Χρήστη</a></li>
                                     <li><a class="dropdown-item" asp-area="" asp-controller="Secretaries" asp-action="SelectCourses">Προβολη Μαθημάτων</a></li>
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="Secretaries" asp-action="InsertCourses"> Καταχώρηση Μαθημάτων</a></li>
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="Secretaries" asp-action="InsertProfessors"> Καταχώρηση Καθηγητών</a></li>
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="Secretaries" asp-action="InsertStudents"> Καταχώρηση Φοιτητων</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Secretaries" asp-action="InsertCourses"> Καταχώρηση Μαθήματος</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Secretaries" asp-action="InsertProfessors"> Καταχώρηση Καθηγητή</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Secretaries" asp-action="InsertStudents"> Καταχώρηση Φοιτητή</a></li>
                                     <li><a class="dropdown-item" asp-area="" asp-controller="Secretaries" asp-action="AssignCourseToProfessor">Ανάθεση μαθήματος σε Καθηγητή</a></li>
                                     <li><a class="dropdown-item" asp-area="" asp-controller="Secretaries" asp-action="AssignCourseToStudent">Δήλωση μαθήματος σε Φοιτητη</a></li>
                                 </ul>
