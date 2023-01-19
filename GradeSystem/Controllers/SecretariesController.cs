@@ -51,7 +51,8 @@ namespace GradeSystem.Controllers
                 string department = HttpContext.Session.GetString("department");
 
 
-                var courses = _context.Courses.Include(s => s.Professor).Where(s => s.Professor.Department.Equals(department) && s.Afm != null);
+                var courses = _context.Courses.Include(s => s.Professor).
+                    Where(s => s.Professor.Department.Equals(department) && s.Afm != null);
                 
 
                 return View(await courses.ToListAsync());
@@ -88,6 +89,7 @@ namespace GradeSystem.Controllers
                 {
 
                     _context.Add(course);
+
                     await _context.SaveChangesAsync();
                     return RedirectToAction(nameof(Index));
                 }
@@ -299,7 +301,8 @@ namespace GradeSystem.Controllers
                     cs.RegistrationNumber = SelectedStudentId;
 
                     CourseHasStudent tmpcourse;
-                    tmpcourse=_context.CourseHasStudents.FirstOrDefault(c => c.IdCourse == (int)SelectedCourseId && c.RegistrationNumber==SelectedStudentId);
+                    tmpcourse=_context.CourseHasStudents.
+                        FirstOrDefault(c => c.IdCourse == (int)SelectedCourseId && c.RegistrationNumber==SelectedStudentId);
                     if (tmpcourse == null)
                     {
                         _context.Add(cs);

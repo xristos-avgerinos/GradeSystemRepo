@@ -63,7 +63,9 @@ namespace GradeSystem.Controllers
 
                 ProfessorLessons(username);
 
-                var gradesByLesson = _context.CourseHasStudents.Include(s => s.Student).Include(s => s.Course).ThenInclude(s => s.Professor).Where(s => s.Course.Professor.Username.Equals(username) && s.GradeCourseStudent != null && s.IdCourse == SelectedCourseId);
+                var gradesByLesson = _context.CourseHasStudents.Include(s => s.Student).Include(s => s.Course).ThenInclude(s => s.Professor).
+                    Where(s => s.Course.Professor.Username.Equals(username) && s.GradeCourseStudent != null && s.IdCourse == SelectedCourseId);
+
                 ViewBag.Selected = SelectedCourseId;
 
                 return View(await gradesByLesson.ToListAsync());
@@ -107,7 +109,9 @@ namespace GradeSystem.Controllers
 
                     CourseHasStudent crs = new CourseHasStudent();
 
-                    crs = _context.CourseHasStudents.FirstOrDefault(u => u.RegistrationNumber == RegNum && u.IdCourse == SelectedCourseId);
+                    crs = _context.CourseHasStudents.
+                        FirstOrDefault(u => u.RegistrationNumber == RegNum && u.IdCourse == SelectedCourseId);
+
                     crs.GradeCourseStudent = grade;
                     _context.Update(crs);
                     _context.SaveChanges();

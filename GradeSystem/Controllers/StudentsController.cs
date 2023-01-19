@@ -44,7 +44,9 @@ namespace GradeSystem.Controllers
             if (HttpContext.Session.GetString("Student") != null)
             {
                 String username = HttpContext.Session.GetString("Student");
-                var allGrades = _context.CourseHasStudents.Include(s => s.Student).Include(s => s.Course).Where(s=>s.Student.Username.Equals(username) && s.GradeCourseStudent!=null);
+
+                var allGrades = _context.CourseHasStudents.Include(s => s.Student).Include(s => s.Course).
+                    Where(s=>s.Student.Username.Equals(username) && s.GradeCourseStudent!=null);
 
                 return View(await allGrades.ToListAsync());
             }
@@ -62,7 +64,9 @@ namespace GradeSystem.Controllers
             {
                 String username = HttpContext.Session.GetString("Student");
 
-                string max_semester = _context.CourseHasStudents.Include(s => s.Student).Include(s => s.Course).Where(s => s.Student.Username.Equals(username) && s.GradeCourseStudent != null).Max(s=>s.Course.CourseSemester);
+                string max_semester = _context.CourseHasStudents.Include(s => s.Student).Include(s => s.Course).
+                    Where(s => s.Student.Username.Equals(username) && s.GradeCourseStudent != null).Max(s=>s.Course.CourseSemester);
+
                 if (max_semester.IsNullOrEmpty())
                 {
                     ViewBag.max_sem = 0;
@@ -74,7 +78,9 @@ namespace GradeSystem.Controllers
                 }
                 
 
-                var gradesBySemester = _context.CourseHasStudents.Include(s => s.Student).Include(s => s.Course).Where(s=>s.Course.CourseSemester.Equals("1") && s.Student.Username.Equals(username) && s.GradeCourseStudent != null);
+                var gradesBySemester = _context.CourseHasStudents.Include(s => s.Student).Include(s => s.Course).
+                    Where(s=>s.Course.CourseSemester.Equals("1") && s.Student.Username.Equals(username) && s.GradeCourseStudent != null);
+
                 ViewBag.Selected = 1;
 
                 return View(await gradesBySemester.ToListAsync());
@@ -94,7 +100,9 @@ namespace GradeSystem.Controllers
                 String username = HttpContext.Session.GetString("Student");
                 ViewBag.Selected = Selected;
                 ViewBag.max_sem = HttpContext.Session.GetInt32("max_sem");
-                var gradesBySemester = _context.CourseHasStudents.Include(s => s.Student).Include(s => s.Course).Where(s => s.Course.CourseSemester.Equals(Selected.ToString()) && s.Student.Username.Equals(username) && s.GradeCourseStudent != null);
+
+                var gradesBySemester = _context.CourseHasStudents.Include(s => s.Student).Include(s => s.Course).
+                    Where(s => s.Course.CourseSemester.Equals(Selected.ToString()) && s.Student.Username.Equals(username) && s.GradeCourseStudent != null);
 
                 return View(await gradesBySemester.ToListAsync());
             }
@@ -112,8 +120,12 @@ namespace GradeSystem.Controllers
             {
                 String username = HttpContext.Session.GetString("Student");
 
-                var gradesAvg = _context.CourseHasStudents.Include(s => s.Student).Include(s => s.Course).Where(s => s.Student.Username.Equals(username) && s.GradeCourseStudent >= 5).Average(s=>s.GradeCourseStudent);
-                int coursesCount = _context.CourseHasStudents.Include(s => s.Student).Where(s => s.Student.Username.Equals(username) && s.GradeCourseStudent>=5).Count();
+                var gradesAvg = _context.CourseHasStudents.Include(s => s.Student).Include(s => s.Course).
+                    Where(s => s.Student.Username.Equals(username) && s.GradeCourseStudent >= 5).Average(s=>s.GradeCourseStudent);
+
+                int coursesCount = _context.CourseHasStudents.Include(s => s.Student).
+                    Where(s => s.Student.Username.Equals(username) && s.GradeCourseStudent>=5).Count();
+
                 ViewBag.coursesCount = coursesCount;
                 if (gradesAvg == null)
                 {
